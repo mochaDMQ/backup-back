@@ -10,7 +10,7 @@ import com.myteam.backupback.service.AdminService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.management.relation.Role;
+
 
 /**
  * 基础前端接口
@@ -24,6 +24,7 @@ public class WebController {
     @GetMapping("/")
     public Result hello(){return Result.success("访问成功");}
 
+    // 登录界面
     @PostMapping("/login")
     public Result login(@RequestBody AuthUser authUser){
         if(ObjectUtil.isEmpty(authUser.getAccount())

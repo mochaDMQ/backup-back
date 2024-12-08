@@ -69,10 +69,10 @@ public class AdminService {
 
     public AuthUser login(AuthUser authUser){
         AuthUser dba = adminMapper.selectByAccount(authUser.getAccount());
-        if (ObjectUtil.isNull(dba)) {
+        if (ObjectUtil.isNull(dba)) { // 用户不存在
             throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
         }
-        if (!authUser.getPassword().equals(dba.getPassword())) {
+        if (!authUser.getPassword().equals(dba.getPassword())) { // 密码错误
             throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
         }
         // 生成token

@@ -19,6 +19,7 @@ import java.util.Date;
 
 // 使用slf4j进行TOKEN生成日志记录
 public class TokenUtils {
+
     private static final Logger log = LoggerFactory.getLogger(TokenUtils.class);
     private static AdminService staticAdminService;
 
@@ -50,7 +51,7 @@ public class TokenUtils {
                 }
             }
         }catch(Exception e){
-            log.error("获取用户信息失败");
+            log.error("获取用户信息失败",e);
         }
         return new AuthUser();
     }
