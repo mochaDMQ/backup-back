@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Admin实际业务处理
+ * 管理员实际业务处理
  **/
 @Service
 public class AdminService {
@@ -30,13 +30,15 @@ public class AdminService {
             throw new CustomException(ResultCodeEnum.USER_EXIST_ERROR);
         }
 
-        if (ObjectUtil.isEmpty(admin.getPassword())) { // 填空则默认处理
+        if (ObjectUtil.isEmpty(admin.getPassword())) { // 管理员端新增使用默认密码
             admin.setPassword(Constants.USER_DEFAULT_PASSWORD);
         }
 
         if (ObjectUtil.isEmpty(admin.getName())) {
             admin.setName(admin.getAccount());
         }
+
+        admin.setRole(RoleEnum.ADMIN.name());
         adminMapper.insert(admin);
     }
 
