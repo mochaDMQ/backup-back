@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 管理员前端接口
+ * 管理员管理接口
  **/
 @RestController
 @RequestMapping("/admin")

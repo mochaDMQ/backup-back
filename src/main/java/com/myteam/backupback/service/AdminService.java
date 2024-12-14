@@ -77,7 +77,7 @@ public class AdminService {
         if (!authUser.getPassword().equals(dba.getPassword())) { // 密码错误
             throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
         }
-        // 生成token
+        // 生成token，data: id-role，sign: pwd
         String tokenData = dba.getId()+"-"+RoleEnum.ADMIN.name();
         String token = TokenUtils.createToken(tokenData,dba.getPassword());
         dba.setToken(token);

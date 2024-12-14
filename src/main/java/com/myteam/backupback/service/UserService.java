@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 普通用户实际业务处理
+ * 业务处理
  **/
 
 @Service
@@ -27,7 +27,7 @@ public class UserService {
 
     public void add(User user){
         User dbuser = userMapper.selectByAccount(user.getAccount());
-        if(ObjectUtil.isNull(dbuser)){ // 用户存在
+        if(ObjectUtil.isNotNull(dbuser)){ // 用户存在
             throw new CustomException(ResultCodeEnum.USER_EXIST_ERROR);
         }
 

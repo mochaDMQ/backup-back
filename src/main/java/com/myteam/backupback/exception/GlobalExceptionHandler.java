@@ -14,18 +14,18 @@ public class GlobalExceptionHandler {
 
     private static final Log log = LogFactory.get();
 
-
-    //统一异常处理@ExceptionHandler,主要用于Exception
     @ExceptionHandler(Exception.class)
-    @ResponseBody//返回json串
+    @ResponseBody// 返回json串
     public Result error(HttpServletRequest request, Exception e){
         log.error("异常信息：",e);
         return Result.error();
     }
 
+    // 普通异常
     @ExceptionHandler(CustomException.class)
     @ResponseBody//返回json串
     public Result customError(HttpServletRequest request, CustomException e){
+        log.error("异常信息：",e);
         return Result.error(e.getCode(), e.getMsg());
     }
 }
