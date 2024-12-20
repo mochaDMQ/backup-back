@@ -80,25 +80,25 @@
     </select>
 
 
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into admin(account, password, name, role)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.account}, #{entity.password}, #{entity.name},#{entity.role})
-        </foreach>
-    </insert>
+<!--    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">-->
+<!--        insert into admin(account, password, name, role)-->
+<!--        values-->
+<!--        <foreach collection="entities" item="entity" separator=",">-->
+<!--            (#{entity.account}, #{entity.password}, #{entity.name},#{entity.role})-->
+<!--        </foreach>-->
+<!--    </insert>-->
 
-    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into admin(account, password, name, role)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.account}, #{entity.password}, #{entity.name}, #{entity.role})
-        </foreach>
-        on duplicate key update
-        account = values(account),
-        password = values(password),
-        name = values(name),
-        role = values(role)
-    </insert>
+<!--    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">-->
+<!--        insert into admin(account, password, name, role)-->
+<!--        values-->
+<!--        <foreach collection="entities" item="entity" separator=",">-->
+<!--            (#{entity.account}, #{entity.password}, #{entity.name}, #{entity.role})-->
+<!--        </foreach>-->
+<!--        on duplicate key update-->
+<!--        account = values(account),-->
+<!--        password = values(password),-->
+<!--        name = values(name),-->
+<!--        role = values(role)-->
+<!--    </insert>-->
 
 </mapper>

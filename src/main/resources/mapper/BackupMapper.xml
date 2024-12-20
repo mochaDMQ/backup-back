@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myteam.backupback.mapper.BackupMapper">
+
+    <sql id="Base_Column_List">
+        id, backup_name, created_at, user_id
+    </sql>
+
+    <resultMap type="com.myteam.backupback.entity.Backup" id="BackupMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="backupName" column="backup_name" jdbcType="VARCHAR"/>
+        <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="BackupMap">
+        select backup.*, user.account as account
+        from backup left join user
+        on backup.user_id = user.id
+        <where>
+            <if test="backupName!=null"> and backup.backup_name like concat('%',#{backupName},'%')</if>
+        </where>
+        order by created_at desc
+    </select>
+
+
+
+    <!--查询单个-->
+    <select id="selectById" resultMap="BackupMap">
+        select
+        <include refid="Base_Column_List" />
+        from compressed
+        where id = #{id}
+    </select>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from backup where id = #{id}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from backup where user_id = #{userId}
+    </delete>
+
+    <insert id="insert" parameterType="com.myteam.backupback.entity.Backup" keyProperty="id" useGeneratedKeys="true">
+        insert into backup(backup_name, created_at, user_id)
+        values (#{backupName}, #{createdAt}, #{userId})
+    </insert>
+
+<!--    &lt;!&ndash;通过主键修改数据&ndash;&gt;-->
+<!--    <update id="updateById" parameterType="com.myteam.backupback.entity.Compressed">-->
+<!--        update compressed-->
+<!--        <set>-->
+<!--            <if test="compressedName != null and compressedName != ''">-->
+<!--                compressed_name = #{compressedName},-->
+<!--            </if>-->
+<!--            <if test="createdAt != null">-->
+<!--                created_at = #{createdAt},-->
+<!--            </if>-->
+<!--            <if test="userId != null">-->
+<!--                user_id = #{userId},-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        where id = #{id}-->
+<!--    </update>-->
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from backup
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="backupName != null and backupName != ''">
+                and backup_name = #{backupName}
+            </if>
+            <if test="createdAt != null">
+                and created_at = #{createdAt}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+</mapper>
+

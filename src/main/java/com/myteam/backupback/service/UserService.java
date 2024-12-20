@@ -31,7 +31,7 @@ public class UserService {
             throw new CustomException(ResultCodeEnum.USER_EXIST_ERROR);
         }
 
-        if (ObjectUtil.isEmpty(user.getPassword())) { // 填空则默认处理
+        if (ObjectUtil.isEmpty(user.getPassword())) { // admin端默认处理
             user.setPassword(Constants.USER_DEFAULT_PASSWORD);
         }
 

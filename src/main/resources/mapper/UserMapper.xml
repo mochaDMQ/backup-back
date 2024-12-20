@@ -80,14 +80,6 @@
     </select>
 
 
-    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into user(account, password, name, role)
-        values
-        <foreach collection="entities" item="entity" separator=",">
-            (#{entity.account}, #{entity.password}, #{entity.name},#{entity.role})
-        </foreach>
-    </insert>
-
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
         insert into user(account, password, name, role)
         values

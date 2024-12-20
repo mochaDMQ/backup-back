@@ -38,8 +38,11 @@ public class TokenUtils {
 
     // 使用JWT生成登录TOKEN
     public static String createToken(String data, String sign) {
+        Date expirationDate = DateUtil.offsetHour(new Date(), 2);
+        System.out.println(DateUtil.formatDate(expirationDate));
+        log.info("token过期时间: {}", expirationDate);
         return JWT.create().withAudience(data) // 将 userId-role 保存到 token 里面,作为载荷
-                .withExpiresAt(DateUtil.offsetHour(new Date(), 2)) // token过期时间
+                .withExpiresAt(expirationDate) // token过期时间
                 .sign(Algorithm.HMAC256(sign)); // 以 pwd 作为 token 的密钥
     }
 

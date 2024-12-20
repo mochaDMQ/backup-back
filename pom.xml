@@ -76,6 +76,16 @@
             <artifactId>hutool-all</artifactId>
             <version>5.8.18</version>
         </dependency>
+
+        <!-- 压缩工具 -->
+        <dependency>
+            <groupId>net.lingala.zip4j</groupId>
+            <artifactId>zip4j</artifactId>
+            <version>2.11.5</version>
+        </dependency>
+
+
+        <!--单元测试-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myteam.backupback.mapper.FilesMapper">
+
+    <resultMap type="com.myteam.backupback.entity.Files" id="FilesMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="fileName" column="file_name" jdbcType="VARCHAR"/>
+        <result property="backupId" column="backup_id" jdbcType="INTEGER"/>
+        <result property="checksum" column="checksum" jdbcType="VARCHAR"/>
+        <result property="size" column="size" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.myteam.backupback.entity.Files" keyProperty="id" useGeneratedKeys="true">
+        insert into files(file_name, backup_id, checksum,size)
+        values (#{fileName},#{backupID},#{checksum},#{size})
+    </insert>
+
+
+    <insert id="batchInsert"  parameterType="java.util.List" keyProperty="id" useGeneratedKeys="true">
+        insert into files(file_name, backup_id, checksum,size)
+        values
+        <foreach collection="list" item="file" separator=",">
+            (#{file.fileName}, #{file.backupId}, #{file.checksum}, #{file.size})
+        </foreach>
+    </insert >
+
+    <select id="selectByBackupId" resultMap="FilesMap">
+        select id, file_name, backup_id, checksum, size
+        from files
+        where backup_id = #{id}
+    </select>
+
+
+
+
+
+
+<!--    &lt;!&ndash;查询单个&ndash;&gt;-->
+<!--    <select id="selectById" resultMap="BackupMap">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List" />-->
+<!--        from compressed-->
+<!--        where id = #{id}-->
+<!--    </select>-->
+
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from files where id = #{id}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from files where backup_id = #{backupId}
+    </delete>
+
+
+
+</mapper>
+
