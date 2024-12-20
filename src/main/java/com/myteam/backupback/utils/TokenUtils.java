@@ -10,6 +10,7 @@ import com.myteam.backupback.service.AdminService;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import com.myteam.backupback.service.UserService;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 // 使用slf4j进行TOKEN生成日志记录
+@Component
 public class TokenUtils {
 
     private static final Log log = LogFactory.get();
