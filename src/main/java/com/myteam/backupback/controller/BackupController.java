@@ -42,20 +42,13 @@ public class BackupController {
     /**
      * 删除
      */
-    @DeleteMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public Result deleteById(@PathVariable Integer id) {
         backupService.deleteById(id);
         return Result.success();
     }
 
-    /**
-     * 批量删除
-     */
-    @DeleteMapping("/delete/batch")
-    public Result deleteBatch(@RequestBody List<Integer> ids) {
-        backupService.deleteBatch(ids);
-        return Result.success();
-    }
+
 
     /**
      * 修改
@@ -87,13 +80,13 @@ public class BackupController {
     /**
      * 分页查询
      */
-    @GetMapping("/selectPage")
-    public Result selectPage(Backup backup,
-                             @RequestParam(defaultValue = "1") Integer pageNum,
-                             @RequestParam(defaultValue = "10") Integer pageSize) {
-        PageInfo<Backup> page = backupService.selectPage(backup, pageNum, pageSize);
-        return Result.success(page);
-    }
+//    @GetMapping("/selectPage")
+//    public Result selectPage(Backup backup,
+//                             @RequestParam(defaultValue = "1") Integer pageNum,
+//                             @RequestParam(defaultValue = "10") Integer pageSize) {
+//        PageInfo<Backup> page = backupService.selectPage(backup, pageNum, pageSize);
+//        return Result.success(page);
+//    }
 
     @GetMapping("/showDetails/{id}")
     public Result showDetails(@PathVariable Integer id){

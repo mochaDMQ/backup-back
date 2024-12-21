@@ -93,8 +93,8 @@ public class BackupService {
                 curFile.setChecksum(checksum);
                 curFile.setSize(fileSize);
                 insertList.add(curFile);
-
             } catch (Exception e) {
+                log.error("文件保存失败: {}", originalFilename,e);
                 throw new CustomException(ResultCodeEnum.FILE_UPLOAD_ERROR);
             }
         }
@@ -105,32 +105,48 @@ public class BackupService {
             // 删除原始文件
             for (File file : compressedList) {
                 if (!file.delete()) {
+                    log.error("文件删除失败:{}",file.getName());
                     throw new CustomException(ResultCodeEnum.FILE_COMPRESS_ERROR);
                 }
             }
         } catch (Exception e) {
+            log.error(e);
             throw new CustomException(ResultCodeEnum.FILE_COMPRESS_ERROR);
         }
-
-
         filesMapper.batchInsert(insertList);
     }
 
     /**
      * 删除
      */
+    @Transactional
     public void deleteById(Integer id) {
-        backupMapper.deleteById(id);
-    }
+        AuthUser currentUser = TokenUtils.getCurrentUser();
+        // 构建zip路径
 
-    /**
-     * 批量删除
-     */
-    public void deleteBatch(List<Integer> ids) {
-        for (Integer id : ids) {
-            backupMapper.deleteById(id);
+        String uploadPath = Constants.PROJECT_PATH+ "/uploads/" + currentUser.getAccount();
+        Backup del = backupMapper.selectById(id);
+        if(del == null){
+            throw new CustomException(ResultCodeEnum.FILE_NOT_EXIST);
+        }
+
+        String zipName = del.getId()+"--"+del.getBackupName()+".zip";
+        File zipFile = new File(uploadPath,zipName);
+        if(!zipFile.delete()){
+            throw new CustomException(ResultCodeEnum.FILE_DELETE_ERROR);
+        }
+
+        try {
+            int rowsAffected = backupMapper.deleteById(id);
+            if (rowsAffected == 0) {
+                log.error("删除备份记录删除错误");
+                throw new CustomException(ResultCodeEnum.DATABASE_OPERATION_FAILED);
+            }
+        } catch (Exception e) {
+            throw new CustomException(ResultCodeEnum.DATABASE_OPERATION_FAILED);
         }
     }
+
 
     /**
      * 根据ID查询
@@ -143,18 +159,19 @@ public class BackupService {
      * 查询所有
      */
     public List<Backup> selectAll(Backup backup) {
-
-        return backupMapper.selectAll(backup);
+        AuthUser currentUser = TokenUtils.getCurrentUser();
+        Integer userId = currentUser.getId();
+        return backupMapper.selectAll(backup,userId);
     }
 
     /**
      * 分页查询
      */
-    public PageInfo<Backup> selectPage(Backup backup, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<Backup> list = backupMapper.selectAll(backup);
-        return PageInfo.of(list);
-    }
+//    public PageInfo<Backup> selectPage(Backup backup, Integer pageNum, Integer pageSize) {
+//        PageHelper.startPage(pageNum, pageSize);
+//        List<Backup> list = backupMapper.selectAll(backup);
+//        return PageInfo.of(list);
+//    }
 
 
 }

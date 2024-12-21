@@ -7,12 +7,12 @@ import java.util.List;
 public interface BackupMapper {
     int insert(Backup backup);
 
-    int deleteById(Integer id);
+    int deleteById(Integer backupId);
 
 //    int updateById(Backup backup);
 
     Backup selectById(Integer id);
 
-    List<Backup> selectAll(Backup backup);
+    List<Backup> selectAll(Backup backup,Integer userId);
 
 }

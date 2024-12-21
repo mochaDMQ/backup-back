@@ -14,9 +14,12 @@ public enum ResultCodeEnum {
     USER_ACCOUNT_ERROR("5003", "账号或密码错误"),
     USER_NOT_EXIST_ERROR("5004", "用户不存在"),
     PARAM_PASSWORD_ERROR("5005", "原密码输入错误"),
-    FILE_UPLOAD_ERROR("5006", "文件上传失败"),
-    FILE_COMPRESS_ERROR("5007", "文件压缩失败");
-
+    FILE_UPLOAD_ERROR("5006", "备份上传失败"),
+    FILE_COMPRESS_ERROR("5007", "备份压缩失败"),
+    FILE_EXCEED_MAXSIZE("5008", "请上传总量不超过1GB的数据"),
+    FILE_DELETE_ERROR("5009", "备份删除失败"),
+    FILE_NOT_EXIST("5010", "备份记录不存在"),
+    DATABASE_OPERATION_FAILED("5011","数据库操作失败");
 
 
     public final String code;

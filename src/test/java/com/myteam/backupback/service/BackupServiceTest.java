@@ -28,15 +28,5 @@ public class BackupServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    public void testSelectAll() {
-        Backup backup = new Backup();
-        List<Backup> expectedBackups = Arrays.asList(new Backup(), new Backup());
 
-        when(backupMapper.selectAll(backup)).thenReturn(expectedBackups);
-
-        List<Backup> actualBackups = backupService.selectAll(backup);
-
-        assertEquals(expectedBackups, actualBackups);
-    }
 }

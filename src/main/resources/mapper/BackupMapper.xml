@@ -17,9 +17,7 @@
         select backup.*, user.account as account
         from backup left join user
         on backup.user_id = user.id
-        <where>
-            <if test="backupName!=null"> and backup.backup_name like concat('%',#{backupName},'%')</if>
-        </where>
+        where user_id = #{userId}
         order by created_at desc
     </select>
 
@@ -29,7 +27,7 @@
     <select id="selectById" resultMap="BackupMap">
         select
         <include refid="Base_Column_List" />
-        from compressed
+        from backup
         where id = #{id}
     </select>
 
