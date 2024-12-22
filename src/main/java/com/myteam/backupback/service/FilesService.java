@@ -21,13 +21,4 @@ public class FilesService {
         return filesMapper.selectByBackupId(id);
     }
 
-    public void insert(Files file){
-        filesMapper.insert(file);
-    }
-
-    public void batchInsert(List<Files> files){
-        filesMapper.batchInsert(files);
-    }
-
-
 }

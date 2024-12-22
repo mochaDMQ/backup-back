@@ -18,7 +18,7 @@
         from backup left join user
         on backup.user_id = user.id
         where user_id = #{userId}
-        order by created_at desc
+        order by id desc
     </select>
 
 

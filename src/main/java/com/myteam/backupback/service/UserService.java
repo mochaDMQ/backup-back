@@ -5,15 +5,20 @@ import com.github.pagehelper.PageInfo;
 import com.myteam.backupback.common.Constants;
 import com.myteam.backupback.common.enums.ResultCodeEnum;
 import com.myteam.backupback.common.enums.RoleEnum;
+import com.myteam.backupback.entity.Backup;
 import com.myteam.backupback.entity.User;
 import com.myteam.backupback.entity.AuthUser;
 import com.myteam.backupback.exception.CustomException;
+import com.myteam.backupback.mapper.BackupMapper;
 import com.myteam.backupback.mapper.UserMapper;
 import com.myteam.backupback.utils.TokenUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -24,6 +29,11 @@ import java.util.List;
 public class UserService {
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private BackupMapper backupMapper;
+    @Autowired
+    private BackupService backupService;
 
     public void add(User user){
         User dbuser = userMapper.selectByAccount(user.getAccount());
@@ -41,7 +51,24 @@ public class UserService {
         userMapper.insert(user);
     }
 
-    public void deleteById(Integer id){ userMapper.deleteById(id); }
+    @Transactional
+    public void deleteById(Integer id){
+        List<Backup> userBackups = backupMapper.selectAll(id);
+        User delUser = userMapper.selectById(id);
+        File userPath = new File(Constants.PROJECT_PATH + "/uploads/" + delUser.getAccount());
+        try{
+            for(Backup bk:userBackups){
+                String zipName = bk.getId() + "--" + bk.getBackupName() + ".zip";
+                File zipFile = new File(userPath,zipName);
+                zipFile.delete();
+            }
+            userPath.delete();
+        }catch(Exception e){
+            throw new RuntimeException("用户相关备份数据删除失败");
+        }
+        userMapper.deleteById(id);
+
+    }
 
     public void deleteBatch(List<Integer> ids) {
         for (Integer id : ids) {
@@ -89,16 +116,5 @@ public class UserService {
         add(user);
     }
 
-    public void updatePassword(AuthUser authuser){
-        User dba = userMapper.selectByAccount(authuser.getAccount());
-        if (ObjectUtil.isNull(dba)) {
-            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
-        }
-        if (!authuser.getPassword().equals(dba.getPassword())) {
-            throw new CustomException(ResultCodeEnum.PARAM_PASSWORD_ERROR);
-        }
-        dba.setPassword(authuser.getNewPassword());
-        userMapper.updateById(dba);
-    }
 
 }

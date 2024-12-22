@@ -13,6 +13,6 @@ public interface BackupMapper {
 
     Backup selectById(Integer id);
 
-    List<Backup> selectAll(Backup backup,Integer userId);
+    List<Backup> selectAll(Integer userId);
 
 }
